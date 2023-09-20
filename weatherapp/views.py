@@ -16,15 +16,14 @@ class LocationDetailView(FormView):
 
         if form.is_valid():
             keyword = form.cleaned_data["keyword"]
-            api_url = (
-                f"http://api.openweathermap.org/data/2.5/weather?q={keyword}&appid=636c5b8925e9a426ca99941d04857fc6"
-            )
+            api_url = f"http://api.openweathermap.org/data/2.5/weather?q={keyword}&units=metric&appid=636c5b8925e9a426ca99941d04857fc6"
             response = requests.get(api_url)
 
             if response.status_code == 200:
                 data = response.json()
                 location_data = {
                     "city": keyword,
+                    "whole": data,
                     "temperature": data["main"]["temp"],
                     "description": data["weather"][0]["description"],
                     "icon": data["weather"][0]["icon"],
