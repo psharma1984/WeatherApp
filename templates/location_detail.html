@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Location Detail</title>
+</head>
+<body>
+    <h1>Location Detail</h1>
+    
+    <!-- Display any error message -->
+    {% if error_message %}
+    <p>Error: {{ error_message }}</p>
+    {% endif %}
+    
+    <!-- Display the form for searching locations -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+    
+    <!-- Display location data if available -->
+    {% if location_data %}
+    <h2>Location Data</h2>
+    <img src="http://openweathermap.org/img/w/{{ location_data.icon }}.png" alt="Image">
+    <ul>
+        <li>City: {{ location_data.city }}</li>
+        <li>Temperature: {{ location_data.temperature }}</li>
+        <li>Conditions: {{ location_data.description }}</li>
+        <!-- Include other location data fields here -->
+    </ul>
+    {% endif %}
+</body>
+</html>
