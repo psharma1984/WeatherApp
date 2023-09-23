@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from .forms import LocationSearchForm
+from .models import Location, WeatherData, APIRequestModel
 import requests
 
 # Create your views here.
@@ -21,14 +22,19 @@ class LocationDetailView(FormView):
 
             if response.status_code == 200:
                 data = response.json()
-                location_data = {
+                location, created = Location.objects.get_or_create(
+                    name=data["name"],
+                    country=data["sys"]["country"],
+                    longitude=data["coord"]["lon"],
+                    latitude=data["coord"]["lat"],
+                )
+                context["location_data"] = {
                     "city": keyword,
                     "whole": data,
                     "temperature": data["main"]["temp"],
                     "description": data["weather"][0]["description"],
                     "icon": data["weather"][0]["icon"],
                 }
-                context["location_data"] = location_data
             else:
                 context["error_message"] = "Failed to fetch location data."
 

@@ -24,6 +24,7 @@
     <h2>Location Data</h2>
     <img src="http://openweathermap.org/img/w/{{ location_data.icon }}.png" alt="Image">
     <ul>
+        <li>{{ location_data.whole }}</li>
         <li>City: {{ location_data.city }}</li>
         <li>Temperature: {{ location_data.temperature }}C</li>
         <li>Conditions: {{ location_data.description }}</li>
