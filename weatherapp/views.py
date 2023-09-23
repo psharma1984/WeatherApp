@@ -3,6 +3,7 @@ from django.views.generic.edit import FormView
 from .forms import LocationSearchForm
 from .models import Location, WeatherData, APIRequestModel
 import requests
+from datetime import datetime
 
 # Create your views here.
 
@@ -27,6 +28,20 @@ class LocationDetailView(FormView):
                     country=data["sys"]["country"],
                     longitude=data["coord"]["lon"],
                     latitude=data["coord"]["lat"],
+                )
+                weather_data = WeatherData(
+                    location=location,
+                    date=datetime.utcfromtimestamp(data["dt"]),
+                    temperature=data["main"]["temp"],
+                    humidity=data["main"]["humidity"],
+                    weather_condition=data["weather"][0]["description"],
+                    wind_speed=data["wind"]["speed"],
+                )
+                weather_data.save()
+                api_request, created = APIRequestModel.objects.get_or_create(
+                    user=request.user,
+                    location=location,
+                    endpoint=api_url,
                 )
                 context["location_data"] = {
                     "city": keyword,

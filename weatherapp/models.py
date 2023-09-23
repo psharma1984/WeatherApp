@@ -21,7 +21,7 @@ class WeatherData(models.Model):
 
 
 class UserData(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     locations = models.ManyToManyField(Location, related_name="users", blank=True)
     default_location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     preferred_units = models.CharField(max_length=10, choices=[("metric", "Metric"), ("imperial", "Imperial")])
