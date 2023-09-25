@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Location(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     country = models.CharField(max_length=100)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)

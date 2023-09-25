@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+    <h2>User Registration</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger">
+                {% for error in form.errors %}
+                    {{ error }}
+                {% endfor %}
+        </div>
+        {% endif %}
+        <!-- Display succes message-->
+        {% if user_registered %}
+        <div class="alert alert-success">
+            Registration successful. You can now <a href="{% url 'login' %}">login</a>
+        </div>
+        {% endif %}
+        <!-- Display the form fields-->
+        {{ form.as_p }}
+        <button type="submit">REGISTER</button>
+    </form>
+</body>
+</html>

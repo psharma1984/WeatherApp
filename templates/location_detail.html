@@ -1,10 +1,5 @@
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Location Detail</title>
-</head>
-<body>
+{% extends "base.html"  %}
+{% block content %}
     <h1>Location Detail</h1>
     
     <!-- Display any error message -->
@@ -26,10 +21,10 @@
     <ul>
         <li>{{ location_data.whole }}</li>
         <li>City: {{ location_data.city }}</li>
-        <li>Temperature: {{ location_data.temperature }}C</li>
+        <li>Temperature: {{ location_data.temperature }} {{ location_data.unit }}</li>
         <li>Conditions: {{ location_data.description }}</li>
         <!-- Include other location data fields here -->
     </ul>
     {% endif %}
-</body>
-</html>
+{% endblock %}
+
