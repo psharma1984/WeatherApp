@@ -9,14 +9,11 @@ class Location(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
 
+    def __str__(self):  # show the actual city name on the dashboard
+        return self.name
 
-class WeatherData(models.Model):
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    date = models.DateTimeField()
-    temperature = models.DecimalField(max_digits=5, decimal_places=1)
-    humidity = models.DecimalField(max_digits=5, decimal_places=2)
-    weather_condition = models.CharField(max_length=10)
-    wind_speed = models.DecimalField(max_digits=5, decimal_places=2)
+    class Meta:  # show the plural of city as cities instead of citys
+        verbose_name_plural = "cities"
 
 
 class UserData(models.Model):

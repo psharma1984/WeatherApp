@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
+from django.views.generic import TemplateView
 from .forms import LocationSearchForm
-from .models import Location, WeatherData, APIRequestModel, UserData
+from .models import Location, APIRequestModel, UserData
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 import requests
@@ -10,6 +11,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
 # Create your views here.
+
+
+class HomeView(TemplateView):
+    template_name = "base.html"
 
 
 class RegistrationView(FormView):
@@ -22,17 +27,8 @@ class RegistrationView(FormView):
     def post(self, request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password1"]
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(self.request, user)
-                request.user_registered = True
-                return redirect("home")
-            else:
-                user = form.save()
-                login(self.request, user)
-                request.user_registered = True
+            user = form.save()
+            return redirect("login")  # Redirect to the login page
 
         return render(request, self.template_name, {"form": form})
 
@@ -70,16 +66,8 @@ class LocationDetailView(LoginRequiredMixin, FormView):
                     )
                     place.save()
                 userdata, created = UserData.objects.get_or_create(user=request.user)
+                userdata.locations.add(place)
 
-                weather_data = WeatherData(
-                    location=place,
-                    date=datetime.utcfromtimestamp(data["dt"]),
-                    temperature=data["main"]["temp"],
-                    humidity=data["main"]["humidity"],
-                    weather_condition=data["weather"][0]["description"],
-                    wind_speed=data["wind"]["speed"],
-                )
-                weather_data.save()
                 api_request, created = APIRequestModel.objects.get_or_create(
                     user=request.user,
                     location=place,
