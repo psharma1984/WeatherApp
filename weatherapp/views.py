@@ -49,7 +49,7 @@ class LocationDetailView(LoginRequiredMixin, FormView):
                 unit = "C"
             else:
                 unit = "F"
-            api_url = f"http://api.openweathermap.org/data/2.5/weather?q={keyword}&units={units}&appid=636c5b8925e9a426ca99941d04857fc6"
+            api_url = f"http://api.openweathermap.org/data/2.5/weather?q={keyword}&units={units}&appid=YOUR_KEY"
             response = requests.get(api_url)
 
             if response.status_code == 200:
